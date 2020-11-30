@@ -1,0 +1,44 @@
+<h1>Welcome to Ashley's card game extravaganzaaa!!!</h1>
+
+
+<!--<div>
+    <button type="button" class="btn btn-primary" (click)="createNewGame()">Host Game</button>
+</div>
+<div *ngIf="gameID">Share this game Id: {{gameID}}</div>-->
+
+<div>
+    <button type="button" class="btn btn-primary" (click)="open(createGameModal)">Host Game</button>
+</div>
+<div>
+    <button type="button" class="btn btn-primary" (click)="joinGame()">Join Game</button>
+</div>
+
+
+
+<ng-template #createGameModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Create Game</h4>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="nameInput">Enter Your Name</label>
+          <div class="input-group">
+            <input [(ngModel)]="hostName" id="nameInput" class="form-control" placeholder="Your Name" name="nameInput">
+          </div>
+          <br>
+          <label for="gameSelection">Select a Game</label>
+          <div class="input-group">
+            <select [(ngModel)]="selectedGame" class="form-control" >
+                <option *ngFor="let game of gameOptions" [ngValue]="game">
+                    {{game}}
+                </option>
+              </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="createNewGame();modal.close()">Create Game</button>
+    </div>
+  </ng-template>
