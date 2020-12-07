@@ -7,31 +7,35 @@ import { GameManagementService } from './Services/game-management.service'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   title = 'card-game-front';
   gameID: string;
+  joinGameID: string;
   closeResult = '';
-  @Input() hostName: string = '';
-  selectedGame: string = 'Oh Hell';
+  hostName: string = '';
+  playerName: string = '';
+  selectedGame: string = '';
   gameOptions: string[];
 
   constructor(private gms: GameManagementService, private modalService: NgbModal) {
     this.gameOptions = ["Oh Hell", "No other games available"];
-   }
+  }
 
   createNewGame(): void {
     this.gms.createNewGame(this.hostName, this.selectedGame)
-      .subscribe(response => this.gameID = response.gameID);
+      .subscribe(response => this.gameID = response.ID);
   }
 
   joinGame(): void {
-
+    this.gms.joinGame(this.playerName, this.joinGameID)
+      .subscribe(response => this.gameID = response.ID);;
   }
 
   open(content): void {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  
+
 }
 
