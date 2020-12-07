@@ -1,6 +1,10 @@
 package com.ashley.CardGame.Services;
 
 import com.ashley.CardGame.Models.Game;
+import com.ashley.CardGame.Models.OhHell;
+import com.ashley.CardGame.Models.OhHellPlayer;
+import com.ashley.CardGame.Models.Player;
+import com.ashley.CardGame.Utilities.Utility;
 
 import java.util.HashMap;
 
@@ -12,22 +16,31 @@ public class GameManagerService {
     private GameManagerService() {
     }
 
-    public Game createNewGame() {
-        Game game = new Game();
-        game.ID = getGameID();
+    public Game createNewGame(String hostName, String gameName) {
+        Game game = null;
+        Player player = null;
+
+        switch (gameName) {
+            case "Oh Hell":
+                game = new OhHell();
+                break;
+            case "Other":
+                break;
+            default:
+               throw new IllegalArgumentException("Invalid Game");
+        }
+
+        game.addPlayer(hostName);
         games.put(game.ID, game);
+
         return game;
     }
 
-    private static String getGameID() {
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String gameID = "";
+    public Game joinGame(String playerName, String gameID) {
+        Game game = games.get(gameID);
+        game.addPlayer(playerName);
 
-        for (int i = 0; i < 5; i++) {
-            int index = (int) (alphabet.length() * Math.random());
-            gameID += alphabet.charAt(index);
-        }
-
-        return gameID;
+        return game;
     }
+
 }
