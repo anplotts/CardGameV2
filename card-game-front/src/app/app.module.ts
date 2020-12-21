@@ -5,16 +5,24 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
+import { StartGameComponent } from './start-game/start-game.component';
+import { AppRoutingModule } from './app-routing.module';
+import { GameplayComponent } from './gameplay/gameplay.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WaitingRoomComponent,
+    StartGameComponent,
+    GameplayComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

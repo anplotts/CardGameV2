@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { NewGame } from '../Models/new-game';
+import { GameStatus } from '../Models/game-status';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { JoinGameResponse } from '../Models/join-game-response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +16,24 @@ export class GameManagementService {
 
   constructor(private http: HttpClient) { }
 
-  createNewGame(hostName: string, selectedGame: string): Observable<NewGame> {
-    return this.http.post<NewGame>(this.URL +
+  createNewGame(hostName: string, selectedGame: string): Observable<JoinGameResponse> {
+    return this.http.post<JoinGameResponse>(this.URL +
       `/createNewGame?hostName=${encodeURIComponent(hostName)}&selectedGame=${encodeURIComponent(selectedGame)}`, null)
-      .pipe(catchError(this.handleError<NewGame>("createNewGame"))
+      .pipe(catchError(this.handleError<JoinGameResponse>("createNewGame"))
       );
   }
 
-  joinGame(playerName: string, gameID: string): Observable<any> {
-    return this.http.put<any>(this.URL +
+  joinGame(playerName: string, gameID: string): Observable<JoinGameResponse> {
+    return this.http.put<JoinGameResponse>(this.URL +
       `/joinGame?playerName=${encodeURIComponent(playerName)}&gameID=${encodeURIComponent(gameID)}`, null)
-      .pipe(catchError(this.handleError<any>("joinGame"))
+      .pipe(catchError(this.handleError<JoinGameResponse>("joinGame"))
+      );
+  }
+
+  getGameStatus(gameID: string): Observable<GameStatus> {
+    return this.http.get<GameStatus>(this.URL + 
+      `/gameStatus?gameID=${encodeURIComponent(gameID)}`)
+      .pipe(catchError(this.handleError<GameStatus>("getGameStatus"))
       );
   }
 

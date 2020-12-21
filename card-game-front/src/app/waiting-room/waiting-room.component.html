@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="text-center">
+        <h3>Waiting for other players to join...</h3>
+        <h4>Share this code: {{gameID}}</h4>
+    </div>
+
+
+    <div class="text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="playersJoined">Players joined: {{playerCount}}/{{maxNumPlayers}}</label>
+                    <select multiple class="form-control" id="playersJoined">
+                        <option *ngFor="let player of playersList" [value]="player.id">
+                            {{player.name}}
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="playerIsHost">
+                    <button type="button" class="btn btn-primary m-1" [disabled]="playerCount < minNumPlayers" (click)="startGame()">Start Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
