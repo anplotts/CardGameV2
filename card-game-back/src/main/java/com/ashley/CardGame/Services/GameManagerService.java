@@ -4,6 +4,7 @@ import com.ashley.CardGame.Models.Game;
 import com.ashley.CardGame.Models.OhHell;
 import com.ashley.CardGame.Models.OhHellPlayer;
 import com.ashley.CardGame.Models.Player;
+import com.ashley.CardGame.Responses.JoinGameResponse;
 import com.ashley.CardGame.Utilities.Utility;
 
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class GameManagerService {
     private GameManagerService() {
     }
 
-    public Game createNewGame(String hostName, String gameName) {
+    public JoinGameResponse createNewGame(String hostName, String gameName) {
         Game game = null;
         Player player = null;
 
@@ -30,17 +31,22 @@ public class GameManagerService {
                throw new IllegalArgumentException("Invalid Game");
         }
 
-        game.addPlayer(hostName);
+        player = game.addPlayer(hostName, true);
         games.put(game.ID, game);
 
-        return game;
+
+        return new JoinGameResponse(game.ID, player.getName(), player.getID());
     }
 
-    public Game joinGame(String playerName, String gameID) {
+    public JoinGameResponse joinGame(String playerName, String gameID) {
         Game game = games.get(gameID);
-        game.addPlayer(playerName);
+        Player player = game.addPlayer(playerName, false);
 
-        return game;
+        return new JoinGameResponse(game.ID, player.getName(), player.getID());
+    }
+
+    public Game getGame(String gameID) {
+        return games.get(gameID);
     }
 
 }
