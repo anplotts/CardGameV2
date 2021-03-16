@@ -21,12 +21,12 @@
         <label for="hostNameInput">Enter Your Name</label>
         <div class="input-group">
           <input [(ngModel)]="hostName" id="hostNameInput" class="form-control" placeholder="Your Name"
-            name="hostNameInput">
+            name="hostNameInput" #name="ngModel" required>
         </div>
         <br>
         <label for="gameSelection">Select a Game</label>
         <div class="input-group">
-          <select [(ngModel)]="selectedGame" class="form-control" name="gameSelection">
+          <select [(ngModel)]="selectedGame" class="form-control" name="gameSelection" required>
             <option *ngFor="let game of gameOptions" [value]="game">
               {{game}}
             </option>
@@ -36,7 +36,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="createNewGame();modal.close()">Create Game</button>
+    <button type="button" class="btn btn-primary" [disabled]="name.invalid" (click)="createNewGame();modal.close()">Create Game</button>
   </div>
 </ng-template>
 
@@ -49,17 +49,17 @@
       <div class="form-group">
         <label for="nameInput">Enter Your Name</label>
         <div class="input-group">
-          <input [(ngModel)]="playerName" id="nameInput" class="form-control" placeholder="Your Name" name="nameInput">
+          <input [(ngModel)]="playerName" id="nameInput" class="form-control" placeholder="Your Name" name="nameInput" #name="ngModel" required>
         </div>
         <br>
         <label for="gameInput">Enter the Game ID</label>
         <div class="input-group">
-          <input [(ngModel)]="joinGameID" id="gameInput" class="form-control" placeholder="Game ID" name="gameInput">
+          <input [(ngModel)]="joinGameID" id="gameInput" class="form-control" placeholder="Game ID" name="gameInput" required> 
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="joinGame();modal.close()">Join Game</button>
+    <button type="button" class="btn btn-primary" [disabled]="name.invalid" (click)="joinGame();modal.close()" >Join Game</button>
   </div>
 </ng-template>

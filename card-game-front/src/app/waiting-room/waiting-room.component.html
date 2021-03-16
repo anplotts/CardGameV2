@@ -1,7 +1,7 @@
 <div class="container">
     <div class="text-center">
-        <h3>Waiting for other players to join...</h3>
-        <h4>Share this code: {{gameID}}</h4>
+        <h1>Waiting for other players to join...</h1>
+        <h2>Share this code: {{gameID}}</h2>
     </div>
 
 
@@ -11,8 +11,8 @@
                 <div class="form-group">
                     <label for="playersJoined">Players joined: {{playerCount}}/{{maxNumPlayers}}</label>
                     <select multiple class="form-control" id="playersJoined">
-                        <option *ngFor="let player of playersList" [value]="player.id">
-                            {{player.name}}
+                        <option *ngFor="let player of playersList" [value]="player.ID">
+                            {{player.ID === this.playerID ? player.name + " (you)" : player.name}}
                         </option>
                     </select>
                 </div>

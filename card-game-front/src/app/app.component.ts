@@ -10,6 +10,7 @@ import { GameManagementService } from './Services/game-management.service'
 
 export class AppComponent {
  
-
+  
+  
 }
 
