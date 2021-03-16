@@ -1,24 +1,23 @@
 package com.ashley.CardGame.Models;
 
 import com.ashley.CardGame.Utilities.Utility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.ArrayList;
 
 public class Player {
-    private String name;
-    private String ID;
-    private boolean isHost;
+    public String name;
+    public String ID;
+    public boolean isHost;
+    public boolean isConnected = true;
 
-    // Takes player's name as input to create a Player
+    @JsonIgnore
+    public ArrayList<Card> hand = new ArrayList<>();
+
     public Player(String name, boolean isHost) {
         this.name = name;
         this.ID = Utility.generateID(3);
         this.isHost = isHost;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getID() { return ID; }
-
-    public boolean getIsHost() { return isHost; }
 }

@@ -2,28 +2,29 @@ package com.ashley.CardGame.Services;
 
 import com.ashley.CardGame.Models.Game;
 import com.ashley.CardGame.Models.OhHell;
-import com.ashley.CardGame.Models.OhHellPlayer;
 import com.ashley.CardGame.Models.Player;
 import com.ashley.CardGame.Responses.JoinGameResponse;
-import com.ashley.CardGame.Utilities.Utility;
 
 import java.util.HashMap;
 
 
 public class GameManagerService {
     public static GameManagerService instance = new GameManagerService();
-    private HashMap<String, Game> games = new HashMap<>();
+    private final HashMap<String, GameService> gameServices = new HashMap<>();
+    private final HashMap<String, OhHellService> ohHellServices = new HashMap<>();
 
     private GameManagerService() {
     }
 
     public JoinGameResponse createNewGame(String hostName, String gameName) {
-        Game game = null;
+        GameService game = null;
         Player player = null;
 
         switch (gameName) {
             case "Oh Hell":
-                game = new OhHell();
+                OhHellService ohHell = new OhHellService();
+                game = ohHell;
+                ohHellServices.put(game.getGameID(), ohHell);
                 break;
             case "Other":
                 break;
@@ -32,21 +33,28 @@ public class GameManagerService {
         }
 
         player = game.addPlayer(hostName, true);
-        games.put(game.ID, game);
+        gameServices.put(game.getGameID(), game);
 
 
-        return new JoinGameResponse(game.ID, player.getName(), player.getID());
+        return new JoinGameResponse(game.getGameID(), player.name, player.ID);
     }
 
     public JoinGameResponse joinGame(String playerName, String gameID) {
-        Game game = games.get(gameID);
+        GameService game = gameServices.get(gameID);
         Player player = game.addPlayer(playerName, false);
 
-        return new JoinGameResponse(game.ID, player.getName(), player.getID());
+        return new JoinGameResponse(game.getGameID(), player.name, player.ID);
     }
 
-    public Game getGame(String gameID) {
-        return games.get(gameID);
+    public GameService getGameService(String gameID) {
+        return gameServices.get(gameID);
     }
 
+    public OhHellService getOhHellService(String gameID) {
+        return ohHellServices.get(gameID);
+    }
+
+    public void startGame(String gameID) {
+        gameServices.get(gameID).startGame();
+    }
 }

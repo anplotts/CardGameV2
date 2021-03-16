@@ -1,1 +1,142 @@
-<p>gameplay works!</p>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <img src="../../assets/Images/CardImages/Title.png" height="150">
+            </div>
+            <div class="col text-center">
+                <div *ngIf="currentTrump">
+                    <figure>
+                        <figcaption>Current Trump Card</figcaption>
+                        <img src="../../assets/Images/CardImages/{{currentTrump.suit}}{{currentTrump.value}}.png"
+                            height="100">
+                    </figure>
+                </div>
+            </div>
+
+            <div class="col-6 scores">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let player of allPlayers" scope="col">{{player.name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td *ngFor="let player of allPlayers">{{player.score}} pts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+
+            <div *ngFor="let player of otherPlayers" class="col">
+                {{player.name}}
+                <div>Current Bid: {{formatBid(player.currentBid)}}</div>
+                <div [class]="player.tricksWonClass">Tricks Won: {{player.currentTricksWon}}</div>
+                <div *ngIf="player.currentPlayedCard;else backOfCard">
+                    <img src="../../assets/Images/CardImages/{{player.currentPlayedCard.suit}}{{player.currentPlayedCard.value}}.png"
+                        height="130px" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <figure *ngIf="myPlayer">
+                    {{myPlayer.name}}
+                    <div>Current Bid: {{formatBid(myPlayer.currentBid)}}</div>
+                    <div [class]="myPlayer.tricksWonClass">Tricks Won: {{myPlayer.currentTricksWon}}</div>
+                    <div *ngIf="myPlayer.currentPlayedCard;else backOfCard">
+                        <img src="../../assets/Images/CardImages/{{myPlayer.currentPlayedCard.suit}}{{myPlayer.currentPlayedCard.value}}.png"
+                            height="130px" />
+                    </div>
+                </figure>
+            </div>
+
+            <div class="col-10 text-center">
+                <figure>
+                    <figcaption>Your Hand</figcaption>
+                    <span *ngFor="let card of playerHand">
+                        <img src="../../assets/Images/CardImages/{{card.suit}}{{card.value}}.png" height="130"
+                            [class]="getClassForCard(card)" (click)="selectCard(card)" [style]="card.style">
+                    </span>
+                    <div>
+                        <button type="button" class="btn btn-primary m-1 float-right" (click)="playCard()"
+                            [disabled]="!timeToPlay">Play
+                            Card</button>
+                    </div>
+                </figure>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #bidModal let-modal>
+    <form [formGroup]="bidForm" (ngSubmit)="submitBid();modal.close()">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Please submit your bid</h4>
+        </div>
+        <div class="modal-body text-center">
+            <figure>
+                <figcaption>Current Trump Card</figcaption>
+                <img src="../../assets/Images/CardImages/{{currentTrump.suit}}{{currentTrump.value}}.png" height="100">
+            </figure>
+            <div *ngFor="let player of otherPlayers">
+                {{player.name}}'s Bid: {{formatBid(player.currentBid)}}
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="bidInput" class="form-control" placeholder="Your Bid" formControlName="bid"
+                        name="bidInput" type="number">
+                </div>
+               
+                <div *ngIf="bidForm.controls.bid.errors && bidForm.controls.bid.errors.invalidBid" class="alert alert-danger">
+                    You can bid anything but {{invalidBid}}.
+                  </div>
+
+                  <div *ngIf="bidForm.controls.bid.errors && bidForm.controls.bid.errors.maxBid" class="alert alert-danger">
+                    You have to bid {{maxBid}} or less.
+                  </div>
+                
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" [disabled]="bidForm.invalid">Submit</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #gameEndModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Game Over!!!!!!!</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th *ngFor="let player of allPlayers" scope="col">{{player.name}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td *ngFor="let player of allPlayers">{{player.score}} pts</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="goHome();modal.close()">Go Home</button>
+    </div>
+</ng-template>
+
+<ng-template #backOfCard>
+    <div>
+        <img src="../../assets/Images/CardImages/Back.png" height="130px" />
+    </div>
+</ng-template>
