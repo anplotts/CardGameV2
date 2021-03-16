@@ -1,13 +1,13 @@
 package com.ashley.CardGame.Models;
 
 public class OhHell extends Game<OhHellPlayer> {
-
-    @Override
-    public OhHellPlayer addPlayer(String playerName, boolean isHost) {
-        OhHellPlayer player = new OhHellPlayer(playerName, isHost);
-        players.put(player.getID(), player);
-        return player;
-    }
+    public int firstBidder = 0;
+    public int firstPlayer = 0;
+    public int roundNum = 1;
+    public Card currentTrump = null;
+    public String leadSuit = "";
+    public boolean isTrumpBroken = false;
+    public OhHellPlayer winner = null;
 
     @Override
     public int getMaxNumPlayers() {

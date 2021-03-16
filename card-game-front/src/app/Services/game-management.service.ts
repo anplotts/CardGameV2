@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { GameStatus } from '../Models/game-status';
+import { PlayerStatusResponse } from '../Responses/player-status-response';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { JoinGameResponse } from '../Models/join-game-response';
+import { JoinGameResponse } from '../Responses/join-game-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameManagementService {
 
-  private rootURL = "http://localhost";
+  private rootURL = "http://192.168.50.250";
   private port = "8080";
   private URL = this.rootURL + ":" + this.port;
 
@@ -18,22 +18,29 @@ export class GameManagementService {
 
   createNewGame(hostName: string, selectedGame: string): Observable<JoinGameResponse> {
     return this.http.post<JoinGameResponse>(this.URL +
-      `/createNewGame?hostName=${encodeURIComponent(hostName)}&selectedGame=${encodeURIComponent(selectedGame)}`, null)
+      `/gm/createNewGame?hostName=${encodeURIComponent(hostName)}&selectedGame=${encodeURIComponent(selectedGame)}`, null)
       .pipe(catchError(this.handleError<JoinGameResponse>("createNewGame"))
       );
   }
 
   joinGame(playerName: string, gameID: string): Observable<JoinGameResponse> {
     return this.http.put<JoinGameResponse>(this.URL +
-      `/joinGame?playerName=${encodeURIComponent(playerName)}&gameID=${encodeURIComponent(gameID)}`, null)
+      `/gm/joinGame?playerName=${encodeURIComponent(playerName)}&gameID=${encodeURIComponent(gameID)}`, null)
       .pipe(catchError(this.handleError<JoinGameResponse>("joinGame"))
       );
   }
 
-  getGameStatus(gameID: string): Observable<GameStatus> {
-    return this.http.get<GameStatus>(this.URL + 
-      `/gameStatus?gameID=${encodeURIComponent(gameID)}`)
-      .pipe(catchError(this.handleError<GameStatus>("getGameStatus"))
+  getPlayerStatus(gameID: string, playerID: string): Observable<PlayerStatusResponse> {
+    return this.http.get<PlayerStatusResponse>(this.URL +
+      `/gm/playerStatus?gameID=${encodeURIComponent(gameID)}&playerID=${encodeURIComponent(playerID)}`)
+      .pipe(catchError(this.handleError<PlayerStatusResponse>("getPlayerStatus"))
+      );
+  }
+
+  startGame(gameID: string): Observable<PlayerStatusResponse> {
+    return this.http.post<PlayerStatusResponse>(this.URL +
+      `/gm/startGame?gameID=${encodeURIComponent(gameID)}`, null)
+      .pipe(catchError(this.handleError<PlayerStatusResponse>("startGame"))
       );
   }
 

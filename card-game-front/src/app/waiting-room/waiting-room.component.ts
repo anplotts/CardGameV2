@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GameManagementService } from '../Services/game-management.service';
 import { interval } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Player } from '../Models/Player';
 
 @Component({
   selector: 'app-waiting-room',
@@ -16,37 +17,44 @@ export class WaitingRoomComponent implements OnInit {
   minNumPlayers: number;
   playerName: string;
   playerID: string;
-  playersList: Array<any>;
+  playersList: Array<Player>;
   playerIsHost: boolean;
 
   constructor(
     private route: ActivatedRoute,
-    private gms: GameManagementService
+    private gms: GameManagementService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.gameID = this.route.snapshot.paramMap.get("id");
     this.playerName = this.route.snapshot.queryParamMap.get("playerName");
     this.playerID = this.route.snapshot.queryParamMap.get("playerID");
-    interval(1000).subscribe(x => this.updateGameStatus());
+    this.updatePlayerStatus();
+    interval(1000).subscribe(x => this.updatePlayerStatus());
   }
 
-  updateGameStatus(): void {
-    this.gms.getGameStatus(this.gameID)
-      .subscribe(response => { 
+  updatePlayerStatus(): void {
+    this.gms.getPlayerStatus(this.gameID, this.playerID)
+      .subscribe(response => {
         this.maxNumPlayers = response.maxNumPlayers;
         this.minNumPlayers = response.minNumPlayers;
-        this.playerCount = response.playerCount;
-        this.playersList = response.playersList;
+        this.playerCount = response.players.length;
+        this.playersList = response.players;
 
-        let player = this.playersList.find(player => this.playerID == player.id);
+        let player = this.playersList.find(player => this.playerID == player.ID);
         this.playerIsHost = player.isHost;
+
+        if (response.isGameStarted) {
+          this.router.navigate([`../gameplay/${this.gameID}`], { queryParams: { playerName: this.playerName, playerID: this.playerID } })
+        }
       });
 
   }
 
   startGame(): void {
-
+    this.gms.startGame(this.gameID)
+      .subscribe(response => this.router.navigate([`../gameplay/${this.gameID}`], { queryParams: { playerName: this.playerName, playerID: this.playerID } }));;
   }
 
 }

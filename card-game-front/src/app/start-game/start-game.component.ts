@@ -21,7 +21,7 @@ export class StartGameComponent {
   gameOptions: string[];
 
   constructor(private gms: GameManagementService, private modalService: NgbModal, private router: Router) {
-    this.gameOptions = ["Oh Hell", "No other games available"];
+    this.gameOptions = ["Oh Hell"];
   }
 
   createNewGame(): void {

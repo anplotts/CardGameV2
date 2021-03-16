@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Sen:wght@700&display=swap');
+
+h1 {
+    font-family: 'Sen', sans-serif;
+    color: #dbdbdb;
+}
+
+.btn-primary {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ec1a37;
+    border-width: 0;
+    width: 10rem;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus,
+.btn-primary:active:focus {
+    background-color: #da001d;
+    border-width: 0;
+    box-shadow: none!important;
+}
+
+.container {
+    padding-top: 10rem;
+}
+
+.modal-title {
+    color: #2a276e;
+    font-family: 'Sen', sans-serif;
+}
+
+.form-group,
+.form-control:focus,
+.input-group:active:focus {
+    font-family: 'Roboto', sans-serif;
+    box-shadow: none!important;
+    border-color:#dbdbdb;
+    background-color: white;
+}
+
