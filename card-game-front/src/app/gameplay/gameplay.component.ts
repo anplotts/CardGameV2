@@ -32,11 +32,13 @@ export class GameplayComponent implements OnInit {
   winner: Player;
   playerStatusSub: any;
   gameStatusSub: any;
+  handEndSub: any;
   tricksWonSub: any;
   invalidBid: Number;
   maxBid: Number;
+  endOfHand: boolean;
 
-  bidForm = new FormGroup( {
+  bidForm = new FormGroup({
     bid: new FormControl('', [Validators.required, Validators.min(0), this.invalidBidValidator(), this.maxBidValidator()])
   });
 
@@ -70,7 +72,7 @@ export class GameplayComponent implements OnInit {
   }
 
   updateGameStatus(): void {
-    if (this.timeToBid || this.timeToPlay || this.waitingForGameStatus) {
+    if (this.timeToBid || this.timeToPlay || this.waitingForGameStatus || this.endOfHand) {
       return;
     }
     this.waitingForGameStatus = true;
@@ -88,7 +90,7 @@ export class GameplayComponent implements OnInit {
       for (let player of response.players) {
         if (player.currentTricksWon !== this.allPlayers.find(oldPlayer => oldPlayer.ID === player.ID).currentTricksWon) {
           player.tricksWonClass = "trick-winner";
-          this.tricksWonSub = interval(1000).subscribe(x => this.updateTricksWonClass(player));
+          this.tricksWonSub = interval(5000).subscribe(x => this.updateTricksWonClass(player));
         }
       }
     }
@@ -102,6 +104,23 @@ export class GameplayComponent implements OnInit {
     this.invalidBid = response.invalidBid;
     this.maxBid = response.maxBid;
 
+    let myUpdatedPlayer = this.allPlayers.find(player => player.ID === this.playerID);
+
+    if (this.myPlayer && ((this.myPlayer.previousPlayedCard == null && myUpdatedPlayer.previousPlayedCard != null)
+      || (this.myPlayer.previousPlayedCard && this.myPlayer.previousPlayedCard.suit !== myUpdatedPlayer.previousPlayedCard.suit
+        && this.myPlayer.previousPlayedCard.value !== myUpdatedPlayer.previousPlayedCard.value))) {
+      this.endOfHand = true;
+      for (let player of this.allPlayers) {
+        player.cardToDisplay = player.previousPlayedCard;
+      }
+      this.handEndSub = interval(5000).subscribe(x => this.changeEndOfHandBool());
+    }
+    else {
+      for (let player of this.allPlayers) {
+        player.cardToDisplay = player.currentPlayedCard;
+      }
+    }
+
     this.myPlayer = this.allPlayers.find(player => player.ID === this.playerID);
     this.otherPlayers = this.allPlayers.filter(player => player.ID !== this.playerID);
 
@@ -112,7 +131,7 @@ export class GameplayComponent implements OnInit {
       this.gameStatusSub.unsubscribe();
     }
 
-    if (this.timeToBid) {
+    if (this.timeToBid && !this.endOfHand) {
       this.open(this.bidModal);
     }
   }
@@ -143,7 +162,8 @@ export class GameplayComponent implements OnInit {
   }
 
   isCardPlayable(card: Card): boolean {
-    if (this.timeToPlay && this.playableCards.find(cardFromList => card.suit === cardFromList.suit && card.value === cardFromList.value)) {
+    if (this.timeToPlay && !this.endOfHand && 
+        this.playableCards.find(cardFromList => card.suit === cardFromList.suit && card.value === cardFromList.value)) {
       return true;
     }
     else {
@@ -168,16 +188,29 @@ export class GameplayComponent implements OnInit {
   }
 
   invalidBidValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const invalidBid = this.invalidBid;
-      return control.value == invalidBid ? {invalidBid: {value: invalidBid}} : null;
+      return control.value == invalidBid ? { invalidBid: { value: invalidBid } } : null;
     }
   }
 
   maxBidValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const maxBid = this.maxBid;
-      return control.value > maxBid ? {maxBid: {value: maxBid}} : null;
+      return control.value > maxBid ? { maxBid: { value: maxBid } } : null;
+    }
+  }
+
+  changeEndOfHandBool(): void {
+    this.endOfHand = false;
+    this.handEndSub.unsubscribe();
+
+    for (let player of this.allPlayers) {
+      player.cardToDisplay = null;
+    }
+
+    if (this.timeToBid) {
+      this.open(this.bidModal);
     }
   }
 }

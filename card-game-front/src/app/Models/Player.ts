@@ -7,6 +7,8 @@ export interface Player {
     isConnected: boolean;
     currentBid: number;
     currentPlayedCard: Card;
+    previousPlayedCard: Card;
+    cardToDisplay: Card;
     currentTricksWon: number;
     score: number;
     tricksWonClass: string;

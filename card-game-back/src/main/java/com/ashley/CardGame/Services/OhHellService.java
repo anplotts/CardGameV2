@@ -162,6 +162,7 @@ public class OhHellService extends GameService<OhHellPlayer, OhHell> {
         game.leadSuit = "";
 
         for (OhHellPlayer player : game.playersInTurnOrder) {
+            player.previousPlayedCard = player.currentPlayedCard;
             player.currentPlayedCard = null;
         }
     }

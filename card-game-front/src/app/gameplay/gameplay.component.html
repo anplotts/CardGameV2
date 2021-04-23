@@ -36,8 +36,8 @@
                 {{player.name}}
                 <div>Current Bid: {{formatBid(player.currentBid)}}</div>
                 <div [class]="player.tricksWonClass">Tricks Won: {{player.currentTricksWon}}</div>
-                <div *ngIf="player.currentPlayedCard;else backOfCard">
-                    <img src="../../assets/Images/CardImages/{{player.currentPlayedCard.suit}}{{player.currentPlayedCard.value}}.png"
+                <div *ngIf="player.cardToDisplay;else backOfCard">
+                    <img src="../../assets/Images/CardImages/{{player.cardToDisplay.suit}}{{player.cardToDisplay.value}}.png"
                         height="130px" />
                 </div>
             </div>
@@ -50,8 +50,8 @@
                     {{myPlayer.name}}
                     <div>Current Bid: {{formatBid(myPlayer.currentBid)}}</div>
                     <div [class]="myPlayer.tricksWonClass">Tricks Won: {{myPlayer.currentTricksWon}}</div>
-                    <div *ngIf="myPlayer.currentPlayedCard;else backOfCard">
-                        <img src="../../assets/Images/CardImages/{{myPlayer.currentPlayedCard.suit}}{{myPlayer.currentPlayedCard.value}}.png"
+                    <div *ngIf="myPlayer.cardToDisplay;else backOfCard">
+                        <img src="../../assets/Images/CardImages/{{myPlayer.cardToDisplay.suit}}{{myPlayer.cardToDisplay.value}}.png"
                             height="130px" />
                     </div>
                 </figure>

@@ -11,7 +11,7 @@ import { InGamePlayerStatusResponse } from '../Responses/in-game-player-status-r
 })
 export class GameService {
 
-  private rootURL = "http://192.168.50.250";
+  private rootURL = "http://52.167.171.193";
   private port = "8080";
   private URL = this.rootURL + ":" + this.port;
 

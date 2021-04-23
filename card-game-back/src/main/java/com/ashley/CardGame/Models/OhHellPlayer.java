@@ -4,6 +4,7 @@ public class OhHellPlayer extends Player {
     public static final int NO_BID = -1;
     public int currentBid = NO_BID;
     public Card currentPlayedCard = null;
+    public Card previousPlayedCard = null;
     public int currentTricksWon = 0;
     public int score = 0;
 
