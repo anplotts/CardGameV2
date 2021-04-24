@@ -106,9 +106,16 @@ export class GameplayComponent implements OnInit {
 
     let myUpdatedPlayer = this.allPlayers.find(player => player.ID === this.playerID);
 
-    if (this.myPlayer && ((!this.myPlayer.previousPlayedCard && myUpdatedPlayer.previousPlayedCard)
-      || (this.myPlayer.previousPlayedCard && this.myPlayer.previousPlayedCard.suit !== myUpdatedPlayer.previousPlayedCard.suit
-        && this.myPlayer.previousPlayedCard.value !== myUpdatedPlayer.previousPlayedCard.value))) {
+    let cardChangedFromNullToNonNull = this.myPlayer && !this.myPlayer.previousPlayedCard && myUpdatedPlayer.previousPlayedCard;
+    console.log(`cardChangedFromNullToNonNull ${cardChangedFromNullToNonNull}`);
+    let cardChangedSuit = this.myPlayer && this.myPlayer.previousPlayedCard &&
+      this.myPlayer.previousPlayedCard.suit !== myUpdatedPlayer.previousPlayedCard.suit;
+    console.log(`cardChangedSuit ${cardChangedSuit}`);
+    let cardChangedValue = this.myPlayer && this.myPlayer.previousPlayedCard &&
+      this.myPlayer.previousPlayedCard.value !== myUpdatedPlayer.previousPlayedCard.value;
+    console.log(`cardChangedValue ${cardChangedValue}`);
+
+    if (cardChangedFromNullToNonNull || cardChangedSuit || cardChangedValue) {
       this.endOfHand = true;
       for (let player of this.allPlayers) {
         player.cardToDisplay = player.previousPlayedCard;
@@ -162,8 +169,8 @@ export class GameplayComponent implements OnInit {
   }
 
   isCardPlayable(card: Card): boolean {
-    if (this.timeToPlay && !this.endOfHand && 
-        this.playableCards.find(cardFromList => card.suit === cardFromList.suit && card.value === cardFromList.value)) {
+    if (this.timeToPlay && !this.endOfHand &&
+      this.playableCards.find(cardFromList => card.suit === cardFromList.suit && card.value === cardFromList.value)) {
       return true;
     }
     else {
