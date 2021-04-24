@@ -8,7 +8,7 @@
                 <div *ngIf="currentTrump">
                     <figure>
                         <figcaption>Current Trump Card</figcaption>
-                        <img src="../../assets/Images/CardImages/{{currentTrump.suit}}{{currentTrump.value}}.png"
+                        <img src="assets/Images/CardImages/{{currentTrump.suit}}{{currentTrump.value}}.png"
                             height="100">
                     </figure>
                 </div>
@@ -37,7 +37,7 @@
                 <div>Current Bid: {{formatBid(player.currentBid)}}</div>
                 <div [class]="player.tricksWonClass">Tricks Won: {{player.currentTricksWon}}</div>
                 <div *ngIf="player.cardToDisplay;else backOfCard">
-                    <img src="../../assets/Images/CardImages/{{player.cardToDisplay.suit}}{{player.cardToDisplay.value}}.png"
+                    <img src="assets/Images/CardImages/{{player.cardToDisplay.suit}}{{player.cardToDisplay.value}}.png"
                         height="130px" />
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     <div>Current Bid: {{formatBid(myPlayer.currentBid)}}</div>
                     <div [class]="myPlayer.tricksWonClass">Tricks Won: {{myPlayer.currentTricksWon}}</div>
                     <div *ngIf="myPlayer.cardToDisplay;else backOfCard">
-                        <img src="../../assets/Images/CardImages/{{myPlayer.cardToDisplay.suit}}{{myPlayer.cardToDisplay.value}}.png"
+                        <img src="assets/Images/CardImages/{{myPlayer.cardToDisplay.suit}}{{myPlayer.cardToDisplay.value}}.png"
                             height="130px" />
                     </div>
                 </figure>
@@ -61,7 +61,7 @@
                 <figure>
                     <figcaption>Your Hand</figcaption>
                     <span *ngFor="let card of playerHand">
-                        <img src="../../assets/Images/CardImages/{{card.suit}}{{card.value}}.png" height="130"
+                        <img src="assets/Images/CardImages/{{card.suit}}{{card.value}}.png" height="130"
                             [class]="getClassForCard(card)" (click)="selectCard(card)" [style]="card.style">
                     </span>
                     <div>
@@ -83,7 +83,7 @@
         <div class="modal-body text-center">
             <figure>
                 <figcaption>Current Trump Card</figcaption>
-                <img src="../../assets/Images/CardImages/{{currentTrump.suit}}{{currentTrump.value}}.png" height="100">
+                <img src="assets/Images/CardImages/{{currentTrump.suit}}{{currentTrump.value}}.png" height="100">
             </figure>
             <div *ngFor="let player of otherPlayers">
                 {{player.name}}'s Bid: {{formatBid(player.currentBid)}}
@@ -137,6 +137,6 @@
 
 <ng-template #backOfCard>
     <div>
-        <img src="../../assets/Images/CardImages/Back.png" height="130px" />
+        <img src="assets/Images/CardImages/Back.png" height="130px" />
     </div>
 </ng-template>
