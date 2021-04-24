@@ -108,10 +108,10 @@ export class GameplayComponent implements OnInit {
 
     let cardChangedFromNullToNonNull = this.myPlayer && !this.myPlayer.previousPlayedCard && myUpdatedPlayer.previousPlayedCard;
     console.log(`cardChangedFromNullToNonNull ${cardChangedFromNullToNonNull}`);
-    let cardChangedSuit = this.myPlayer && this.myPlayer.previousPlayedCard &&
+    let cardChangedSuit = this.myPlayer && this.myPlayer.previousPlayedCard && myUpdatedPlayer.previousPlayedCard &&
       this.myPlayer.previousPlayedCard.suit !== myUpdatedPlayer.previousPlayedCard.suit;
     console.log(`cardChangedSuit ${cardChangedSuit}`);
-    let cardChangedValue = this.myPlayer && this.myPlayer.previousPlayedCard &&
+    let cardChangedValue = this.myPlayer && this.myPlayer.previousPlayedCard && myUpdatedPlayer.previousPlayedCard &&
       this.myPlayer.previousPlayedCard.value !== myUpdatedPlayer.previousPlayedCard.value;
     console.log(`cardChangedValue ${cardChangedValue}`);
 
