@@ -106,7 +106,7 @@ export class GameplayComponent implements OnInit {
 
     let myUpdatedPlayer = this.allPlayers.find(player => player.ID === this.playerID);
 
-    if (this.myPlayer && ((this.myPlayer.previousPlayedCard == null && myUpdatedPlayer.previousPlayedCard != null)
+    if (this.myPlayer && ((!this.myPlayer.previousPlayedCard && myUpdatedPlayer.previousPlayedCard)
       || (this.myPlayer.previousPlayedCard && this.myPlayer.previousPlayedCard.suit !== myUpdatedPlayer.previousPlayedCard.suit
         && this.myPlayer.previousPlayedCard.value !== myUpdatedPlayer.previousPlayedCard.value))) {
       this.endOfHand = true;
