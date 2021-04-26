@@ -19,6 +19,7 @@ export class WaitingRoomComponent implements OnInit {
   playerID: string;
   playersList: Array<Player>;
   playerIsHost: boolean;
+  waitingPlayerSub: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +32,7 @@ export class WaitingRoomComponent implements OnInit {
     this.playerName = this.route.snapshot.queryParamMap.get("playerName");
     this.playerID = this.route.snapshot.queryParamMap.get("playerID");
     this.updatePlayerStatus();
-    interval(1000).subscribe(x => this.updatePlayerStatus());
+    this.waitingPlayerSub = interval(1000).subscribe(x => this.updatePlayerStatus());
   }
 
   updatePlayerStatus(): void {
@@ -53,6 +54,7 @@ export class WaitingRoomComponent implements OnInit {
   }
 
   startGame(): void {
+    this.waitingPlayerSub.unsubscribe();
     this.gms.startGame(this.gameID)
       .subscribe(response => this.router.navigate([`../gameplay/${this.gameID}`], { queryParams: { playerName: this.playerName, playerID: this.playerID } }));;
   }
