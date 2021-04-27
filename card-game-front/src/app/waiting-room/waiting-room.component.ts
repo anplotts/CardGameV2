@@ -47,6 +47,7 @@ export class WaitingRoomComponent implements OnInit {
         this.playerIsHost = player.isHost;
 
         if (response.isGameStarted) {
+          this.waitingPlayerSub.unsubscribe();
           this.router.navigate([`../gameplay/${this.gameID}`], { queryParams: { playerName: this.playerName, playerID: this.playerID } })
         }
       });
