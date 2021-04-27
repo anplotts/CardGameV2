@@ -66,7 +66,7 @@
                     </span>
                     <div>
                         <button type="button" class="btn btn-primary m-1 float-right" (click)="playCard()"
-                            [disabled]="!timeToPlay">Play
+                            [disabled]="!timeToPlay || endOfHand">Play
                             Card</button>
                     </div>
                 </figure>
